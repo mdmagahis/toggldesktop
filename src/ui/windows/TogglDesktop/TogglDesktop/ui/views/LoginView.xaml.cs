@@ -7,11 +7,10 @@ using System.Windows.Media.Animation;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Navigation;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Util;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
@@ -32,26 +31,22 @@ namespace TogglDesktop
         private ConfirmAction confirmAction = ConfirmAction.Unknown;
         private bool loggingIn;
         private bool countriesLoaded = false;
-        private long selectedCountryID = -1;
-        private List<Toggl.TogglCountryView> countriesList;
+        private LoginViewModel viewModel;
 
         public LoginView()
         {
             this.InitializeComponent();
+            ViewModel = new LoginViewModel();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
 
             this.IsVisibleChanged += this.onIsVisibleChanged;
-            Toggl.OnDisplayCountries += this.onDisplayCountries;
         }
 
-        private void onDisplayCountries(List<TogglDesktop.Toggl.TogglCountryView> list)
+        public LoginViewModel ViewModel
         {
-            if (this.TryBeginInvoke(this.onDisplayCountries, list))
-                return;
-
-            this.countriesList = list;
-            this.countrySelect.ItemsSource = list.Select(c => new ComboItem { Name = c.Name, ID = (int)c.ID }).ToList(); ;
-         }
+            get => viewModel;
+            set => DataContext = viewModel = value;
+        }
 
         private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -195,7 +190,7 @@ namespace TogglDesktop
                     var email = this.emailTextBox.Text;
                     var password = this.passwordBox.Text;
 
-                    success = await Task.Run(() => confirmAction(email, password, selectedCountryID));
+                    success = await Task.Run(() => confirmAction(email, password, ViewModel.SelectedCountry?.ID ?? -1));
                 }
                 finally
                 {
@@ -258,7 +253,7 @@ namespace TogglDesktop
 
         private bool validateMandatorySignupFields()
         {
-            if (this.selectedCountryID == -1)
+            if (this.ViewModel.SelectedCountry != null)
             {
                 this.countrySelect.Focus();
                 Toggl.NewError("Please select Country before signing up", true);
@@ -429,17 +424,5 @@ namespace TogglDesktop
         {
             Toggl.OpenInBrowser(e.Uri.ToString());
         }
-
-        private void countrySelect_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            TogglDesktop.Toggl.TogglCountryView item = this.countriesList[this.countrySelect.SelectedIndex];
-            this.selectedCountryID = item.ID;
-        }
-    }
-
-    class ComboItem
-    {
-        public string Name { get; set; }
-        public int ID { get; set; }
     }
 }
