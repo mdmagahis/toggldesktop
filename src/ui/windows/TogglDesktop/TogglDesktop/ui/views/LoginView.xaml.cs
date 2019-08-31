@@ -8,6 +8,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Navigation;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Util;
@@ -32,7 +33,7 @@ namespace TogglDesktop
         private bool loggingIn;
         private bool countriesLoaded = false;
         private long selectedCountryID = -1;
-        private List<TogglDesktop.Toggl.TogglCountryView> countriesList;
+        private List<Toggl.TogglCountryView> countriesList;
 
         public LoginView()
         {
@@ -49,17 +50,7 @@ namespace TogglDesktop
                 return;
 
             this.countriesList = list;
-
-            List<ComboItem> items = new List<ComboItem>();
-            foreach (TogglDesktop.Toggl.TogglCountryView c in list)
-            {
-                items.Add(new ComboItem()
-                {
-                    Name = c.Name,
-                    ID = (int)c.ID
-                });
-            }
-            this.countrySelect.ItemsSource = items;
+            this.countrySelect.ItemsSource = list.Select(c => new ComboItem { Name = c.Name, ID = (int)c.ID }).ToList(); ;
          }
 
         private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -115,7 +106,7 @@ namespace TogglDesktop
                     this.googleSignup();
                     break;
                 default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
+                    throw new ArgumentException($"Invalid action '{this.confirmAction}' in login form.");
             }
         }
 
@@ -273,7 +264,7 @@ namespace TogglDesktop
                 Toggl.NewError("Please select Country before signing up", true);
                 return false;
             }
-            if (!this.tosCheckbox.IsChecked.Value)
+            if (this.tosCheckbox.IsChecked != true)
             {
                 this.tosCheckbox.Focus();
                 Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
