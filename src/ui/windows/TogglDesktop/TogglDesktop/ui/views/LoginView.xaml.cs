@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
 using System.Windows.Navigation;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Util;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -95,10 +90,10 @@ namespace TogglDesktop
             switch (this.confirmAction)
             {
                 case ConfirmAction.LogIn:
-                    this.googleLogin();
+                    ViewModel.GoogleLogin();
                     break;
                 case ConfirmAction.SignUp:
-                    this.googleSignup();
+                    ViewModel.GoogleSignup();
                     break;
                 default:
                     throw new ArgumentException($"Invalid action '{this.confirmAction}' in login form.");
@@ -279,76 +274,6 @@ namespace TogglDesktop
             }
 
             return true;
-        }
-
-        private async void googleLogin()
-        {
-            try
-            {
-                var credential = await obtainGoogleUserCredentialAsync();
-                Toggl.GoogleLogin(credential.Token.AccessToken);
-                await credential.RevokeTokenAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("access_denied") ||
-                    (ex.InnerException != null &&
-                     ex.InnerException.Message.Contains("access_denied")))
-                {
-                    Toggl.NewError("Login process was canceled", true);
-                }
-                else
-                {
-                    Toggl.NewError(ex.Message, false);
-                }
-            }
-        }
-
-        private async void googleSignup()
-        {
-            try
-            {
-                var credential = await obtainGoogleUserCredentialAsync();
-                Toggl.GoogleSignup(credential.Token.AccessToken, ViewModel.SelectedCountry?.ID ?? default);
-                await credential.RevokeTokenAsync(CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("access_denied") ||
-                    (ex.InnerException != null &&
-                    ex.InnerException.Message.Contains("access_denied")))
-                {
-                    Toggl.NewError("Signup process was canceled", true);
-                }
-                else
-                {
-                    Toggl.NewError(ex.Message, false);
-                }
-            }
-        }
-
-        private static async Task<UserCredential> obtainGoogleUserCredentialAsync()
-        {
-            var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                new ClientSecrets
-                {
-                    ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
-                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
-                },
-                new[]
-                {
-                    Oauth2Service.Scope.UserinfoEmail,
-                    Oauth2Service.Scope.UserinfoProfile
-                },
-                "user",
-                CancellationToken.None);
-            var isTokenExpired = credential.Token.IsExpired(SystemClock.Default);
-            if (isTokenExpired)
-            {
-                await credential.RefreshTokenAsync(CancellationToken.None);
-            }
-
-            return credential;
         }
 
         private void reset()
