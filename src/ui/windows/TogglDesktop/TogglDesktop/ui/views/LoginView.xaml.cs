@@ -114,13 +114,10 @@ namespace TogglDesktop
                     this.confirmButtonText.Text = "SIGN UP";
                     this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
                     this.signupLoginToggle.Content = "Log in";
-                    Task.Factory.StartNew(() =>
-                    {
-                        getCountries();
-                    });
+                    Task.Run(getCountries);
                     break;
                 default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
+                    throw new ArgumentException($"Invalid action '{action}' in login form.");
             }
 
             ViewModel.SelectedConfirmAction = action;
