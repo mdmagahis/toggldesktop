@@ -309,7 +309,7 @@ namespace TogglDesktop
             try
             {
                 var credential = await obtainGoogleUserCredentialAsync();
-                Toggl.GoogleSignup(credential.Token.AccessToken, selectedCountryID);
+                Toggl.GoogleSignup(credential.Token.AccessToken, ViewModel.SelectedCountry?.ID ?? default);
                 await credential.RevokeTokenAsync(CancellationToken.None);
             }
             catch (Exception ex)
