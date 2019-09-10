@@ -74,7 +74,8 @@ namespace TogglDesktop.ViewModels
 
         private void OnDisplayCountries(List<Toggl.TogglCountryView> list)
         {
-            Countries = list.Select(c => new CountryViewModel(c)).ToArray();
+            var countriesVm = list.Select(c => new CountryViewModel(c)).ToArray();
+            Dispatcher.CurrentDispatcher.Invoke(() => { Countries = countriesVm; });
         }
 
         private static async Task<UserCredential> obtainGoogleUserCredentialAsync()

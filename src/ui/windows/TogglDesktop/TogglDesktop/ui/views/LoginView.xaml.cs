@@ -128,14 +128,11 @@ namespace TogglDesktop
 
         private void getCountries()
         {
-            Dispatcher.Invoke(() =>
+            if (!this.countriesLoaded)
             {
-                if (!this.countriesLoaded)
-                {
-                    Toggl.GetCountries();
-                    this.countriesLoaded = true;
-                }
-            });            
+                Toggl.GetCountries();
+                this.countriesLoaded = true;
+            }
         }
 
         private void tryConfirm()
