@@ -38,7 +38,7 @@ namespace TogglDesktop
         private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (this.IsVisible)
-                this.setConfirmAction(LoginViewModel.ConfirmAction.LogIn);
+                this.setConfirmAction(ConfirmAction.LogIn);
         }
 
         #region events
@@ -61,11 +61,11 @@ namespace TogglDesktop
         {
             switch (ViewModel.SelectedConfirmAction)
             {
-                case LoginViewModel.ConfirmAction.LogIn:
-                    this.setConfirmAction(LoginViewModel.ConfirmAction.SignUp);
+                case ConfirmAction.LogIn:
+                    this.setConfirmAction(ConfirmAction.SignUp);
                     break;
-                case LoginViewModel.ConfirmAction.SignUp:
-                    this.setConfirmAction(LoginViewModel.ConfirmAction.LogIn);
+                case ConfirmAction.SignUp:
+                    this.setConfirmAction(ConfirmAction.LogIn);
                     break;
                 default:
                     throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", ViewModel.SelectedConfirmAction));
@@ -81,10 +81,10 @@ namespace TogglDesktop
 
             switch (ViewModel.SelectedConfirmAction)
             {
-                case LoginViewModel.ConfirmAction.LogIn:
+                case ConfirmAction.LogIn:
                     LoginViewModel.GoogleLogin();
                     break;
-                case LoginViewModel.ConfirmAction.SignUp:
+                case ConfirmAction.SignUp:
                     ViewModel.GoogleSignup();
                     break;
                 default:
@@ -101,26 +101,18 @@ namespace TogglDesktop
 
         #region controlling
 
-        private void setConfirmAction(LoginViewModel.ConfirmAction action)
+        private void setConfirmAction(ConfirmAction action)
         {
             switch (action)
             {
-                case LoginViewModel.ConfirmAction.LogIn:
+                case ConfirmAction.LogIn:
                     this.confirmButtonText.Text = "LOG IN";
-                    this.forgotPasswordButton.Visibility = Visibility.Visible;
                     this.googleLoginButtonTextBlock.Text = "LOG IN WITH GOOGLE";
-                    this.countryLabel.Visibility = Visibility.Collapsed;
-                    this.countrySelect.Visibility = Visibility.Collapsed;
-                    this.tosCheckbox.Visibility = Visibility.Collapsed;
                     this.signupLoginToggle.Content = "Sign up for free";
                     break;
-                case LoginViewModel.ConfirmAction.SignUp:
+                case ConfirmAction.SignUp:
                     this.confirmButtonText.Text = "SIGN UP";
-                    this.forgotPasswordButton.Visibility = Visibility.Collapsed;
                     this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
-                    this.countryLabel.Visibility = Visibility.Visible;
-                    this.countrySelect.Visibility = Visibility.Visible;
-                    this.tosCheckbox.Visibility = Visibility.Visible;
                     this.signupLoginToggle.Content = "Log in";
                     Task.Factory.StartNew(() =>
                     {
@@ -154,10 +146,10 @@ namespace TogglDesktop
             }
             switch (ViewModel.SelectedConfirmAction)
             {
-                case LoginViewModel.ConfirmAction.LogIn:
+                case ConfirmAction.LogIn:
                     this.confirm(Toggl.Login, "log in");
                     break;
-                case LoginViewModel.ConfirmAction.SignUp:
+                case ConfirmAction.SignUp:
                     this.confirm(Toggl.Signup, "sign up");
                     break;
                 default:
@@ -230,7 +222,7 @@ namespace TogglDesktop
                 return false;
             }
 
-            if (ViewModel.SelectedConfirmAction == LoginViewModel.ConfirmAction.SignUp
+            if (ViewModel.SelectedConfirmAction == ConfirmAction.SignUp
                 && !validateMandatorySignupFields())
             {
                 return false;
@@ -260,7 +252,7 @@ namespace TogglDesktop
 
         private bool validateGoogleLoginSignup()
         {
-            if (ViewModel.SelectedConfirmAction == LoginViewModel.ConfirmAction.SignUp
+            if (ViewModel.SelectedConfirmAction == ConfirmAction.SignUp
                 && !validateMandatorySignupFields())
             {
                 return false;

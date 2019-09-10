@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Util;
@@ -38,7 +39,7 @@ namespace TogglDesktop.ViewModels
             set => RaiseAndSetIfChanged(ref confirmAction, value);
         }
 
-        private static async void GoogleAuth(Action<string> authAction, string authProcessName)
+        private static async Task GoogleAuth(Action<string> authAction, string authProcessName)
         {
             try
             {
@@ -63,12 +64,12 @@ namespace TogglDesktop.ViewModels
 
         public async void GoogleSignup()
         {
-            GoogleAuth(accessToken => Toggl.GoogleSignup(accessToken, SelectedCountry?.ID ?? default), "Signup");
+            await GoogleAuth(accessToken => Toggl.GoogleSignup(accessToken, SelectedCountry?.ID ?? default), "Signup");
         }
 
         public static async void GoogleLogin()
         {
-            GoogleAuth(accessToken => Toggl.GoogleLogin(accessToken), "Login");
+            await GoogleAuth(accessToken => Toggl.GoogleLogin(accessToken), "Login");
         }
 
         private void OnDisplayCountries(List<Toggl.TogglCountryView> list)
@@ -111,12 +112,12 @@ namespace TogglDesktop.ViewModels
             public string Name => countryView.Name;
             public long ID => countryView.ID;
         }
+    }
 
-        public enum ConfirmAction
-        {
-            Unknown = 0,
-            LogIn,
-            SignUp
-        }
+    public enum ConfirmAction
+    {
+        Unknown = 0,
+        LogIn,
+        SignUp
     }
 }
