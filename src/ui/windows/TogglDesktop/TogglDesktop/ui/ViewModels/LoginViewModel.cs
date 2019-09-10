@@ -13,6 +13,7 @@ namespace TogglDesktop.ViewModels
     {
         private IList<CountryViewModel> countries;
         private CountryViewModel selectedCountry;
+        private ConfirmAction confirmAction;
 
         public LoginViewModel()
         {
@@ -29,6 +30,12 @@ namespace TogglDesktop.ViewModels
         {
             get => selectedCountry;
             set => RaiseAndSetIfChanged(ref selectedCountry, value);
+        }
+
+        public ConfirmAction SelectedConfirmAction
+        {
+            get => confirmAction;
+            set => RaiseAndSetIfChanged(ref confirmAction, value);
         }
 
         private static async void GoogleAuth(Action<string> authAction, string authProcessName)
@@ -59,7 +66,7 @@ namespace TogglDesktop.ViewModels
             GoogleAuth(accessToken => Toggl.GoogleSignup(accessToken, SelectedCountry?.ID ?? default), "Signup");
         }
 
-        public async void GoogleLogin()
+        public static async void GoogleLogin()
         {
             GoogleAuth(accessToken => Toggl.GoogleLogin(accessToken), "Login");
         }
@@ -67,18 +74,6 @@ namespace TogglDesktop.ViewModels
         private void OnDisplayCountries(List<Toggl.TogglCountryView> list)
         {
             Countries = list.Select(c => new CountryViewModel(c)).ToArray();
-        }
-
-        public class CountryViewModel
-        {
-            private readonly Toggl.TogglCountryView countryView;
-            public CountryViewModel(Toggl.TogglCountryView countryView)
-            {
-                this.countryView = countryView;
-            }
-
-            public string Name => countryView.Name;
-            public long ID => countryView.ID;
         }
 
         private static async Task<UserCredential> obtainGoogleUserCredentialAsync()
@@ -103,6 +98,25 @@ namespace TogglDesktop.ViewModels
             }
 
             return credential;
+        }
+
+        public class CountryViewModel
+        {
+            private readonly Toggl.TogglCountryView countryView;
+            public CountryViewModel(Toggl.TogglCountryView countryView)
+            {
+                this.countryView = countryView;
+            }
+
+            public string Name => countryView.Name;
+            public long ID => countryView.ID;
+        }
+
+        public enum ConfirmAction
+        {
+            Unknown = 0,
+            LogIn,
+            SignUp
         }
     }
 }

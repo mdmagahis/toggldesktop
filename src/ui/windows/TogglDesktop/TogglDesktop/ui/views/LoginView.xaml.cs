@@ -11,19 +11,11 @@ namespace TogglDesktop
 {
     public partial class LoginView : IMainView
     {
-        private enum ConfirmAction
-        {
-            Unknown = 0,
-            LogIn,
-            SignUp
-        }
-
         private readonly Storyboard confirmSpinnerAnimation;
 
         private Action onLogin;
         private object opacityAnimationToken;
 
-        private ConfirmAction confirmAction = ConfirmAction.Unknown;
         private bool loggingIn;
         private bool countriesLoaded = false;
         private LoginViewModel viewModel;
@@ -46,7 +38,7 @@ namespace TogglDesktop
         private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (this.IsVisible)
-                this.setConfirmAction(ConfirmAction.LogIn);
+                this.setConfirmAction(LoginViewModel.ConfirmAction.LogIn);
         }
 
         #region events
@@ -67,16 +59,16 @@ namespace TogglDesktop
 
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
         {
-            switch (this.confirmAction)
+            switch (ViewModel.SelectedConfirmAction)
             {
-                case ConfirmAction.LogIn:
-                    this.setConfirmAction(ConfirmAction.SignUp);
+                case LoginViewModel.ConfirmAction.LogIn:
+                    this.setConfirmAction(LoginViewModel.ConfirmAction.SignUp);
                     break;
-                case ConfirmAction.SignUp:
-                    this.setConfirmAction(ConfirmAction.LogIn);
+                case LoginViewModel.ConfirmAction.SignUp:
+                    this.setConfirmAction(LoginViewModel.ConfirmAction.LogIn);
                     break;
                 default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
+                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", ViewModel.SelectedConfirmAction));
             }
         }
 
@@ -87,16 +79,16 @@ namespace TogglDesktop
                 return;
             }
 
-            switch (this.confirmAction)
+            switch (ViewModel.SelectedConfirmAction)
             {
-                case ConfirmAction.LogIn:
-                    ViewModel.GoogleLogin();
+                case LoginViewModel.ConfirmAction.LogIn:
+                    LoginViewModel.GoogleLogin();
                     break;
-                case ConfirmAction.SignUp:
+                case LoginViewModel.ConfirmAction.SignUp:
                     ViewModel.GoogleSignup();
                     break;
                 default:
-                    throw new ArgumentException($"Invalid action '{this.confirmAction}' in login form.");
+                    throw new ArgumentException($"Invalid action '{ViewModel.SelectedConfirmAction}' in login form.");
             }
         }
 
@@ -109,11 +101,11 @@ namespace TogglDesktop
 
         #region controlling
 
-        private void setConfirmAction(ConfirmAction action)
+        private void setConfirmAction(LoginViewModel.ConfirmAction action)
         {
             switch (action)
             {
-                case ConfirmAction.LogIn:
+                case LoginViewModel.ConfirmAction.LogIn:
                     this.confirmButtonText.Text = "LOG IN";
                     this.forgotPasswordButton.Visibility = Visibility.Visible;
                     this.googleLoginButtonTextBlock.Text = "LOG IN WITH GOOGLE";
@@ -122,7 +114,7 @@ namespace TogglDesktop
                     this.tosCheckbox.Visibility = Visibility.Collapsed;
                     this.signupLoginToggle.Content = "Sign up for free";
                     break;
-                case ConfirmAction.SignUp:
+                case LoginViewModel.ConfirmAction.SignUp:
                     this.confirmButtonText.Text = "SIGN UP";
                     this.forgotPasswordButton.Visibility = Visibility.Collapsed;
                     this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
@@ -138,7 +130,8 @@ namespace TogglDesktop
                 default:
                     throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
             }
-            this.confirmAction = action;
+
+            ViewModel.SelectedConfirmAction = action;
         }
 
         private void getCountries()
@@ -159,16 +152,16 @@ namespace TogglDesktop
             {
                 return;
             }
-            switch (this.confirmAction)
+            switch (ViewModel.SelectedConfirmAction)
             {
-                case ConfirmAction.LogIn:
+                case LoginViewModel.ConfirmAction.LogIn:
                     this.confirm(Toggl.Login, "log in");
                     break;
-                case ConfirmAction.SignUp:
+                case LoginViewModel.ConfirmAction.SignUp:
                     this.confirm(Toggl.Signup, "sign up");
                     break;
                 default:
-                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
+                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", ViewModel.SelectedConfirmAction));
             }
         }
 
@@ -237,7 +230,7 @@ namespace TogglDesktop
                 return false;
             }
 
-            if (this.confirmAction == ConfirmAction.SignUp
+            if (ViewModel.SelectedConfirmAction == LoginViewModel.ConfirmAction.SignUp
                 && !validateMandatorySignupFields())
             {
                 return false;
@@ -267,7 +260,7 @@ namespace TogglDesktop
 
         private bool validateGoogleLoginSignup()
         {
-            if (this.confirmAction == ConfirmAction.SignUp
+            if (ViewModel.SelectedConfirmAction == LoginViewModel.ConfirmAction.SignUp
                 && !validateMandatorySignupFields())
             {
                 return false;
