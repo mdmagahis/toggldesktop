@@ -36,8 +36,20 @@ namespace TogglDesktop.ViewModels
         public ConfirmAction SelectedConfirmAction
         {
             get => confirmAction;
-            set => RaiseAndSetIfChanged(ref confirmAction, value);
+            set
+            {
+                if (RaiseAndSetIfChanged(ref confirmAction, value))
+                {
+                    RaisePropertyChanged(nameof(ConfirmButtonText));
+                    RaisePropertyChanged(nameof(GoogleLoginButtonText));
+                    RaisePropertyChanged(nameof(SignupLoginToggleText));
+                }
+            }
         }
+
+        public string ConfirmButtonText => SelectedConfirmAction == ConfirmAction.LogIn ? "LOG IN" : "SIGN UP";
+        public string GoogleLoginButtonText => SelectedConfirmAction == ConfirmAction.LogIn ? "LOG IN WITH GOOGLE" : "SIGN UP WITH GOOGLE";
+        public string SignupLoginToggleText => SelectedConfirmAction == ConfirmAction.LogIn ? "Sign up for free" : "Log in";
 
         private static async Task GoogleAuth(Action<string> authAction, string authProcessName)
         {

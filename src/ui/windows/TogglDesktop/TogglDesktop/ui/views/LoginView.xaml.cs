@@ -106,14 +106,8 @@ namespace TogglDesktop
             switch (action)
             {
                 case ConfirmAction.LogIn:
-                    this.confirmButtonText.Text = "LOG IN";
-                    this.googleLoginButtonTextBlock.Text = "LOG IN WITH GOOGLE";
-                    this.signupLoginToggle.Content = "Sign up for free";
                     break;
                 case ConfirmAction.SignUp:
-                    this.confirmButtonText.Text = "SIGN UP";
-                    this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
-                    this.signupLoginToggle.Content = "Log in";
                     Task.Run(getCountries);
                     break;
                 default:
