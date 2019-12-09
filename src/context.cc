@@ -952,9 +952,9 @@ bool Context::isPostponed(
     const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
     
-    // if `value` is only slighly smaller than `now` it's probably the same task and not postponed
+    // if `value` is only slighly larger than `now` it's probably the same task and not postponed
     // hence perform comparison using epsilon = `kTimeComparisonEpsilonMicroSeconds`
-    if (now > value + kTimeComparisonEpsilonMicroSeconds) {
+    if (now + kTimeComparisonEpsilonMicroSeconds > value) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
