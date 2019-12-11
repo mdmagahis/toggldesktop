@@ -241,6 +241,7 @@
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\EqualToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
@@ -298,6 +299,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\LoginViewModel.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
@@ -372,15 +374,6 @@
       <DependentUpon>EditViewPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ExtendedTextBox.cs" />
-    <Compile Include="ui\controls\LoginConfirmButton.xaml.cs">
-      <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginPasswordBox.xaml.cs">
-      <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginTextBox.xaml.cs">
-      <DependentUpon>LoginTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -389,6 +382,7 @@
     <Compile Include="Toggl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\StringExtensions.cs" />
     <Compile Include="utilities\Utils.cs" />
     <Compile Include="utilities\Win32.cs" />
     <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
@@ -673,6 +667,7 @@
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Logos.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
@@ -797,18 +792,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\controls\LoginConfirmButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\controls\LoginPasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\controls\LoginTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\windows\FeedbackWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -850,10 +833,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\TimeEntryCellStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\LoginViewStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -978,8 +957,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\toggl-logo-dark.png" />
-    <Resource Include="Resources\toggl-logo-light.png" />
+    <Resource Include="Resources\bg-pattern.png" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
