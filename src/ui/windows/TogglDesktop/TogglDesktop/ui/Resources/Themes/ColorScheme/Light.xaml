@@ -14,7 +14,7 @@
     <!-- Light Gray -->
     <Color x:Key="Toggl.DisabledElementColor">#D9D9D9</Color>
     <!-- Off-white -->
-    <Color x:Key="Toggl.BackgroundColor">#FAFBFC</Color>
+    <Color x:Key="Toggl.BackgroundColor">#F8F9FA</Color>
     <!-- White -->
     <Color x:Key="Toggl.CardBackgroundColor">#FFFFFF</Color>
     <!-- White -->
