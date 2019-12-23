@@ -84,6 +84,7 @@
 		B8470E4C2334C377000D88CE /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = B8470E4A2334C377000D88CE /* random.h */; };
 		B8470E4D2334C377000D88CE /* random.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8470E4B2334C377000D88CE /* random.cc */; };
 		BA063C0123B0AF2F003A96FE /* MacOSApplicationInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */; };
+		BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA063C0323B0B761003A96FE /* AppKit.framework */; };
 		BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */; };
 		BA2DA11C21A6864D0027B7A5 /* rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = BA2DA11A21A6864D0027B7A5 /* rectangle.h */; };
 		BA2DA11D21A6864D0027B7A5 /* rectangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11B21A6864D0027B7A5 /* rectangle.cc */; };
@@ -183,6 +184,7 @@
 		B8470E4A2334C377000D88CE /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = random.h; path = ../../../random.h; sourceTree = "<group>"; };
 		B8470E4B2334C377000D88CE /* random.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random.cc; path = ../../../random.cc; sourceTree = "<group>"; };
 		BA063BFF23B0AF2F003A96FE /* MacOSApplicationInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSApplicationInfo.mm; sourceTree = "<group>"; };
+		BA063C0323B0B761003A96FE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSVersionChecker.mm; sourceTree = "<group>"; };
 		BA2DA11A21A6864D0027B7A5 /* rectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rectangle.h; path = ../../../rectangle.h; sourceTree = "<group>"; };
 		BA2DA11B21A6864D0027B7A5 /* rectangle.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rectangle.cc; path = ../../../rectangle.cc; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				74A026E11A884D5A0087570A /* liblua.a in Frameworks */,
 				74CAAD0318185A9B001B77BB /* Carbon.framework in Frameworks */,
 				74AA947A18091AE10000539F /* WebKit.framework in Frameworks */,
+				BA063C0423B0B761003A96FE /* AppKit.framework in Frameworks */,
 				C5DA1F9317F18CBB001C4565 /* libcrypto.a in Frameworks */,
 				C5DA1F9117F18CB6001C4565 /* libssl.a in Frameworks */,
 			);
@@ -236,6 +239,7 @@
 		BAD233D921D60A4D0039C742 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BA063C0323B0B761003A96FE /* AppKit.framework */,
 				BAD233DE21D60A4D0039C742 /* libPocoCrypto.dylib */,
 				BAD233DD21D60A4D0039C742 /* libPocoData.dylib */,
 				BAD233E021D60A4D0039C742 /* libPocoDataSQLite.dylib */,
