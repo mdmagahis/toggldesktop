@@ -346,7 +346,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string &project_guid);
+        const std::string &project_guid,
+        const bool_t update_ui = true);
 
     error SetTimeEntryDate(
         const std::string &GUID,
@@ -362,7 +363,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetTimeEntryTags(
         const std::string &GUID,
-        const std::string &value);
+        const std::string &value,
+        const bool_t update_ui = true);
 
     error SetTimeEntryBillable(
         const std::string &GUID,
@@ -370,7 +372,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetTimeEntryDescription(
         const std::string &GUID,
-        const std::string &value);
+        const std::string &value,
+        const bool_t update_ui = true);
 
     error Stop(const bool prevent_on_app);
 

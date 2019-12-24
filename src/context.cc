@@ -309,7 +309,8 @@ error Context::StartEvents() {
     return noError;
 }
 
-error Context::save(const bool push_changes, const bool update_ui) {
+error Context::save(const bool push_changes,
+                    const bool update_ui) {
     logger().debug("save");
     try {
         std::vector<ModelChange> changes;
@@ -3044,7 +3045,8 @@ error Context::SetTimeEntryProject(
     const std::string &GUID,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string &project_guid) {
+    const std::string &project_guid,
+    const bool_t update_ui) {
     try {
         if (GUID.empty()) {
             return displayError(std::string(__FUNCTION__) + ": Missing GUID");
@@ -3104,7 +3106,7 @@ error Context::SetTimeEntryProject(
     } catch(const std::string & ex) {
         return displayError(ex);
     }
-    return displayError(save(true));
+    return displayError(save(true, update_ui));
 }
 
 error Context::SetTimeEntryDate(
@@ -3291,7 +3293,8 @@ error Context::SetTimeEntryStop(
 
 error Context::SetTimeEntryTags(
     const std::string &GUID,
-    const std::string &value) {
+    const std::string &value,
+    const bool_t update_ui) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3323,7 +3326,7 @@ error Context::SetTimeEntryTags(
         te->SetUIModified();
     }
 
-    return displayError(save(true));
+    return displayError(save(true, update_ui));
 }
 
 error Context::SetTimeEntryBillable(
@@ -3365,7 +3368,8 @@ error Context::SetTimeEntryBillable(
 
 error Context::SetTimeEntryDescription(
     const std::string &GUID,
-    const std::string &value) {
+    const std::string &value,
+    const bool_t update_ui) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3402,7 +3406,7 @@ error Context::SetTimeEntryDescription(
         te->SetUIModified();
     }
 
-    return displayError(save(true));
+    return displayError(save(true, update_ui));
 }
 
 error Context::Stop(const bool prevent_on_app) {
