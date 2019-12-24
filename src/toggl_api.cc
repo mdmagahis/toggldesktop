@@ -1436,3 +1436,14 @@ void toggl_iam_click(void *context,
     }
     app(context)->TrackInAppMessage(type);
 }
+
+bool_t toggl_set_time_entry(
+    void *context,
+    const char_t *guid,
+    const char_t *description,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *tags) {
+    return false;
+}

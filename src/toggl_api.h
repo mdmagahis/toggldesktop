@@ -1066,6 +1066,16 @@ extern "C" {
     TOGGL_EXPORT void toggl_iam_click(
         void *context,
         const uint64_t type);
+
+TOGGL_EXPORT bool_t toggl_set_time_entry(
+        void *context,
+        const char_t *guid,
+        const char_t *description,
+        const uint64_t task_id,
+        const uint64_t project_id,
+        const char_t *project_guid,
+        const char_t *tags);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

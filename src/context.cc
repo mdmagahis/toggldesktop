@@ -309,7 +309,7 @@ error Context::StartEvents() {
     return noError;
 }
 
-error Context::save(const bool push_changes) {
+error Context::save(const bool push_changes, const bool update_ui) {
     logger().debug("save");
     try {
         std::vector<ModelChange> changes;
@@ -322,11 +322,13 @@ error Context::save(const bool push_changes) {
             }
         }
 
-        UIElements render;
-        render.display_unsynced_items = true;
-        render.display_timer_state = true;
-        render.ApplyChanges(time_entry_editor_guid_, changes);
-        updateUI(render);
+        if (update_ui) {
+            UIElements render;
+            render.display_unsynced_items = true;
+            render.display_timer_state = true;
+            render.ApplyChanges(time_entry_editor_guid_, changes);
+            updateUI(render);
+        }
 
         if (push_changes) {
             logger().debug("onPushChanges executing");
