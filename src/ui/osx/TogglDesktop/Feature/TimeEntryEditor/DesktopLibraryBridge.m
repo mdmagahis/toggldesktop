@@ -11,6 +11,10 @@
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
 
+@interface DesktopLibraryBridge ()
+@property (strong, nonatomic) NSUndoManager *undoManager;
+@end
+
 @implementation DesktopLibraryBridge
 
 void *ctx;
@@ -133,10 +137,12 @@ void *ctx;
 
 - (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
 {
+    self.undoManager = undoManager;
+
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if ([item confirmlessDelete])
 	{
-        [self deleteItem:item undoManager:undoManager];
+        [self deleteItem:item];
 		return;
 	}
 	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", item.Description];
@@ -153,19 +159,19 @@ void *ctx;
 	}
 
 	// Delete
-    [self deleteItem:item undoManager:undoManager];
+    [self deleteItem:item];
 }
 
-- (void) deleteItem:(TimeEntryViewItem *) item undoManager:(NSUndoManager *) undoManager
+- (void) deleteItem:(TimeEntryViewItem *) item
 {
-    [self registerUndoDeleteItem:item undoManager:undoManager];
+    [self registerUndoDeleteItem:item];
     toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
 }
 
-- (void) registerUndoDeleteItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
+- (void) registerUndoDeleteItem:(TimeEntryViewItem *)item
 {
-    [undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
-    [undoManager setActionName:@"Undo Delete Time Entry"];
+    [self.undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
+    [self.undoManager setActionName:@"Undo Delete Time Entry"];
 }
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
@@ -239,6 +245,8 @@ void *ctx;
     if (guid != nil) {
         NSString *GUID = [NSString stringWithUTF8String:guid];
         free(guid);
+        // Don't support redo
+        [self.undoManager removeAllActions];
         return GUID;
     }
     return nil;
