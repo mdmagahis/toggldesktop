@@ -24,7 +24,6 @@
 + (void)setUpdaterChannel:(NSString *)channel;
 + (ScriptResult *)runScript:(NSString *)script;
 + (void)runClearCommand;
-+ (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title;
 @end
 
 BOOL wasLaunchedAsLoginOrResumeItem(void);

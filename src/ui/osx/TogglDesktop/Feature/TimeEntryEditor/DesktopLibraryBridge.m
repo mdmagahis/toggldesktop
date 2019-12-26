@@ -131,12 +131,12 @@ void *ctx;
 							 [endTime UTF8String]);
 }
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
 {
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if ([item confirmlessDelete])
 	{
-		toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+        [self deleteItem:item undoManager:undoManager];
 		return;
 	}
 	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", item.Description];
@@ -153,7 +153,19 @@ void *ctx;
 	}
 
 	// Delete
-	toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+    [self deleteItem:item undoManager:undoManager];
+}
+
+- (void) deleteItem:(TimeEntryViewItem *) item undoManager:(NSUndoManager *) undoManager
+{
+    [self registerUndoDeleteItem:item undoManager:undoManager];
+    toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+}
+
+- (void) registerUndoDeleteItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
+{
+    [undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
+    [undoManager setActionName:@"Undo Delete Time Entry"];
 }
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete

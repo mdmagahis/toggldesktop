@@ -56,7 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *_Nullable) undoManager;
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
