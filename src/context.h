@@ -743,6 +743,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string last_message_id_;
 
     const bool handleStopRunningEntry();
+    bool checkIfSkipPomodoro(TimeEntry *te);
 };
 
 void on_websocket_message(
